@@ -7,13 +7,7 @@ import { AuthMiddleware } from './Middleware/Middlewarebase64';
 import { TodoModule } from './todo/todo.module';
 
 @Module({
-  imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://sarvarbekred147:sarvarbek.21@todonest.ib2zzsk.mongodb.net/?retryWrites=true&w=majority&appName=TODONEST',
-    ),
-    UserModule,
-    TodoModule,
-  ],
+  imports: [MongooseModule.forRoot(process.env.MURL), UserModule, TodoModule],
   controllers: [AppController],
   providers: [AppService],
 })
