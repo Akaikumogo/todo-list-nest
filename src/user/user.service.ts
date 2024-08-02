@@ -21,7 +21,6 @@ export class UserService {
     const existingUser = await this.userModel
       .findOne({ email: createUserDto.email })
       .exec();
-    console.log('Sukaaa blya', existingUser);
     if (existingUser) {
       throw new ConflictException('User already exists');
     }
