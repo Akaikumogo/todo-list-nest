@@ -1,6 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { Server } from 'http';
+
+let cachedServer: Server;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,5 +20,11 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);
+  cachedServer = app.getHttpServer();
 }
-bootstrap();
+
+if (!cachedServer) {
+  bootstrap();
+}
+
+export default cachedServer;
