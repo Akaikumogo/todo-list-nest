@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   HttpException,
   Injectable,
   NotFoundException,
@@ -20,11 +21,13 @@ export class UserService {
     const existingUser = await this.userModel
       .findOne({ email: createUserDto.email })
       .exec();
+    console.log('Sukaaa blya', existingUser);
     if (existingUser) {
-      throw new Error('User already exists');
+      throw new ConflictException('User already exists');
     }
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const newUser = { ...createUserDto, password: hashedPassword };
+
     const user = new this.userModel(newUser);
     return user.save();
   }
@@ -64,9 +67,18 @@ export class UserService {
   }
 
   async update(updateUserDto: UpdateUserDto): Promise<User> {
-    return this.userModel
-      .findByIdAndUpdate(updateUserDto.id, updateUserDto, { new: true })
+    const hashedPassword = await bcrypt.hash(updateUserDto.password, 10);
+    const updatedUser = await this.userModel
+      .findByIdAndUpdate(
+        updateUserDto.id,
+        { ...updateUserDto, password: hashedPassword },
+        { new: true },
+      )
       .exec();
+    if (!updatedUser) {
+      throw new NotFoundException('User not found');
+    }
+    return updatedUser;
   }
 
   async deleteUserById(id: string): Promise<void> {

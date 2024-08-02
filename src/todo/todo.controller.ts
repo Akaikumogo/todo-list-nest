@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -18,27 +19,31 @@ export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
   @Post()
-  create(@Body() createTodoDto: CreateTodoDto) {
-    return this.todoService.create(createTodoDto);
+  async create(@Body() createTodoDto: CreateTodoDto, @Req() req) {
+    return this.todoService.create(createTodoDto, req);
   }
 
   @Get()
-  findAll() {
-    return this.todoService.findAll();
+  findAll(@Req() req) {
+    return this.todoService.findAll(req);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.todoService.findOne(+id);
+  findOne(@Param('id') id: string, @Req() req) {
+    return this.todoService.findOne(id, req);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todoService.update(+id, updateTodoDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateTodoDto: UpdateTodoDto,
+    @Req() req,
+  ) {
+    return this.todoService.update(id, updateTodoDto, req);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.todoService.remove(+id);
+  remove(@Param('id') id: string, @Req() req) {
+    return this.todoService.remove(id, req);
   }
 }

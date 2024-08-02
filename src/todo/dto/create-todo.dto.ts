@@ -5,4 +5,5 @@ export class CreateTodoDto {
   readonly todoName: string;
   @ApiProperty()
   readonly Description: string;
+  readonly user: string;
 }

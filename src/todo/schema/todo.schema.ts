@@ -1,15 +1,15 @@
 import { Schema } from 'mongoose';
 
 export const TodoSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  user: { type: String, required: true },
   todoName: { type: String, required: true },
   Description: { type: String, required: true },
-  addedDate: { type: String, required: true },
-  LastChangeDate: { type: String, required: true },
+  addedDate: { type: Date, required: true },
+  LastChangeDate: { type: Date, default: null },
   Status: {
     type: String,
-    enum: ['OnPending', 'OnProcces', 'OnSuccess'],
+    enum: ['OnPending', 'OnProcess', 'OnSuccess'],
     default: 'OnPending',
   },
-  isDeleted: { type: Boolean, require: true },
+  isDeleted: { type: Boolean, required: true },
 });

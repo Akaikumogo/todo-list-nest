@@ -1,9 +1,10 @@
 import { Document } from 'mongoose';
-
 export interface ITodo extends Document {
-  readonly todoName: string;
-  readonly Status: string;
-  readonly Description: string;
-  readonly addedDate: string;
-  readonly LastChangeDate: string;
+  user: string;
+  todoName: string;
+  Description: string;
+  addedDate: Date;
+  LastChangeDate: Date | null;
+  Status: 'OnPending' | 'OnProcess' | 'OnSuccess';
+  isDeleted: boolean;
 }
