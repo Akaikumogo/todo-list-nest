@@ -7,6 +7,11 @@ let cachedServer: Server;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: '*', // Barcha domenlarga ruxsat berish. Bu xavfsizlik jihatidan zaif. Kerakli domenlarni kiriting.
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
 
   // Swagger configuration
   const config = new DocumentBuilder()
